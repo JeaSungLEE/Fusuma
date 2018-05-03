@@ -447,7 +447,7 @@ public struct ImageMetadata {
             
             let targetWidth  = floor(CGFloat(asset.pixelWidth) * cropRect.width)
             let targetHeight = floor(CGFloat(asset.pixelHeight) * cropRect.height)
-            let dimensionW   = max(min(targetHeight, targetWidth), 1024 * UIScreen.main.scale)
+            let dimensionW   = min(targetHeight, targetWidth)
             let dimensionH   = dimensionW * self.getCropHeightRatio()
             
             let targetSize   = CGSize(width: dimensionW, height: dimensionH)
