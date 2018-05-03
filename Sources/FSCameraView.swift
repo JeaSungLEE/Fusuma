@@ -199,18 +199,18 @@ final class FSCameraView: UIView, UIGestureRecognizerDelegate {
                 let rect   = videoLayer.metadataOutputRectConverted(fromLayerRect: videoLayer.bounds)
                 let width  = CGFloat(cgImage.width)
                 let height = CGFloat(cgImage.height)
-                
+                let cropSize = min(rect.size.width * width, rect.size.height * height)
                 let cropRect = CGRect(x: rect.origin.x * width,
                                       y: rect.origin.y * height,
-                                      width: rect.size.width * width,
-                                      height: rect.size.height * height)
+                                      width: cropSize,
+                                      height: cropSize)
                 
                 guard let img = cgImage.cropping(to: cropRect) else {
                     
                     return
                 }
                 
-                let croppedUIImage = UIImage(cgImage: img, scale: 1.0, orientation: image.imageOrientation)
+                let croppedUIImage = UIImage(cgImage: img, scale: 1.0, orientation: .up).rotate(radians: .pi / 2)
                 
                 DispatchQueue.main.async(execute: { () -> Void in
                     
@@ -403,16 +403,36 @@ fileprivate extension FSCameraView {
             return
         }
     }
-
+    
     var cameraIsAvailable: Bool {
-
+        
         let status = AVCaptureDevice.authorizationStatus(for: AVMediaType.video)
-
+        
         if status == AVAuthorizationStatus.authorized {
-
+            
             return true
         }
-
+        
         return false
     }
 }
+
+fileprivate extension UIImage {
+    func rotate(radians: CGFloat) -> UIImage {
+        let rotatedSize = CGRect(origin: .zero, size: size).applying(CGAffineTransform(rotationAngle: CGFloat(radians))).integral.size
+        UIGraphicsBeginImageContext(rotatedSize)
+        if let context = UIGraphicsGetCurrentContext() {
+            let origin = CGPoint(x: rotatedSize.width / 2.0, y: rotatedSize.height / 2.0)
+            context.translateBy(x: origin.x, y: origin.y)
+            context.rotate(by: radians)
+            draw(in: CGRect(x: -origin.x, y: -origin.y, width: size.width, height: size.height))
+            let rotatedImage = UIGraphicsGetImageFromCurrentImageContext()
+            UIGraphicsEndImageContext()
+            
+            return rotatedImage ?? self
+        }
+        
+        return self
+    }
+}
+
