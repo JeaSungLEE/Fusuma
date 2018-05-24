@@ -54,7 +54,7 @@ public extension FusumaDelegate {
 }
 
 public var fusumaBaseTintColor   = UIColor.hex("#c9c7c8", alpha: 1.0)
-public var fusumaTintColor       = UIColor.hex("#424141", alpha: 1.0)
+public var fusumaTintColor       = UIColor.hex("#ff7272", alpha: 1.0)
 public var fusumaBackgroundColor = UIColor.hex("#FCFCFC", alpha: 1.0)
 
 public var fusumaCheckImage: UIImage?
@@ -74,7 +74,7 @@ public var fusumaSavesImage: Bool = false
 public var fusumaCameraRollTitle = "Library"
 public var fusumaCameraTitle     = "Photo"
 public var fusumaVideoTitle      = "Video"
-public var fusumaTitleFont       = UIFont(name: "AvenirNext-DemiBold", size: 15)
+public var fusumaTitleFont       = UIFont.boldSystemFont(ofSize: 18)
 
 public var autoDismiss: Bool = true
 
@@ -183,7 +183,7 @@ public struct ImageMetadata {
         cameraShotContainer.addSubview(cameraView)
         videoShotContainer.addSubview(videoView)
         
-        titleLabel.textColor = fusumaTintColor
+        titleLabel.textColor = UIColor.hex("#444444", alpha: 1.0)
         titleLabel.font      = fusumaTitleFont
         
         if availableModes.count == 0 || availableModes.count >= 4 {
