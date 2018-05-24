@@ -124,6 +124,7 @@ public struct ImageMetadata {
     @IBOutlet weak var cameraButton: UIButton!
     @IBOutlet weak var videoButton: UIButton!
     @IBOutlet weak var doneButton: UIButton!
+    @IBOutlet weak var safeAreaView: UIView!
     
     lazy var albumView  = FSAlbumView.instance()
     lazy var cameraView = FSCameraView.instance()
@@ -325,7 +326,8 @@ public struct ImageMetadata {
             videoView.frame = CGRect(origin: CGPoint.zero, size: videoShotContainer.frame.size)
             videoView.layoutIfNeeded()
             videoView.initialize()
-        }        
+        }
+        self.view.bringSubview(toFront: safeAreaView)
     }
     
     public override func viewWillDisappear(_ animated: Bool) {
@@ -602,6 +604,7 @@ private extension FusumaViewController {
         }
         
         self.view.bringSubview(toFront: menuView)
+        self.view.bringSubview(toFront: safeAreaView)
     }
     
     func updateDoneButtonVisibility() {
